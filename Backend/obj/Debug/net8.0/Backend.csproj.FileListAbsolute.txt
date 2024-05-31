@@ -136,3 +136,4 @@ C:\Users\Malat\Desktop\Code\SSMS\SchoolProject\Backend\obj\Debug\net8.0\refint\B
 C:\Users\Malat\Desktop\Code\SSMS\SchoolProject\Backend\obj\Debug\net8.0\Backend.pdb
 C:\Users\Malat\Desktop\Code\SSMS\SchoolProject\Backend\obj\Debug\net8.0\Backend.genruntimeconfig.cache
 C:\Users\Malat\Desktop\Code\SSMS\SchoolProject\Backend\obj\Debug\net8.0\ref\Backend.dll
+C:\Users\Malat\Desktop\Code\SSMS\SchoolProject\Backend\obj\Debug\net8.0\Backend.sourcelink.json
