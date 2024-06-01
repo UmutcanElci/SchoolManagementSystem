@@ -36,15 +36,23 @@ public class ClassService
             return false; // Student not found
         }
 
-        var classEntity = await _context.Classes
-            .FirstOrDefaultAsync(c => c.Id == classId && c.Grade == student.Grade);
+        var classEntity = await _context.Classes.FindAsync(classId);
         if (classEntity == null)
         {
-            return false; // Class not found or grade mismatch
+            return false; // Class not found
         }
 
         student.ClassId = classEntity.Id;
         await _context.SaveChangesAsync();
         return true;
+    }
+
+
+    // Get all students whose ClassId is null
+    public async Task<List<Student>> GetStudentsWithoutClassAsync()
+    {
+        return await _context.Students
+            .Where(s => s.ClassId == null)
+            .ToListAsync();
     }
 }

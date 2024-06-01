@@ -1,0 +1,33 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>WinExe</OutputType>
+        <TargetFramework>net8.0-windows</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <UseWPF>true</UseWPF>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <None Remove="imgs\back.png" />
+      <None Remove="imgs\login.png" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="FontAwesome.Sharp" Version="6.3.0" />
+      <PackageReference Include="FontAwesome.WPF" Version="4.7.0.9" />
+      <PackageReference Include="LiveCharts.Wpf" Version="0.9.7" />
+      <PackageReference Include="System.Data.SqlClient" Version="4.8.6" />
+      <PackageReference Include="System.Net.Http" Version="4.3.4" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Resource Include="imgs\back.png" />
+      <Resource Include="imgs\login.png" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Backend\Backend.csproj" />
+    </ItemGroup>
+
+</Project>

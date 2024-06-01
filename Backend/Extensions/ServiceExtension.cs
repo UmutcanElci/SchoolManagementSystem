@@ -15,6 +15,6 @@ public static class ServiceExtension
         services.AddScoped<ParentService>();
         services.AddScoped<PasswordService>();
         services.AddScoped<ClassService>();
-        
+        services.AddScoped<StudentService>();
     }
 }

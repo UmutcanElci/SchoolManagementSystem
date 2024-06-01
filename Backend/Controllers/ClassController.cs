@@ -15,31 +15,37 @@ public class ClassController : ControllerBase
         _classService = classService;
     }
 
-    // Endpoint to list all classes
     [HttpGet("GetAllClasses")]
-    public async Task<ActionResult<List<Class>>> GetAllClasses()
+    public async Task<IActionResult> GetAllClasses()
     {
         var classes = await _classService.GetAllClassesAsync();
         return Ok(classes);
     }
 
-    // Endpoint to list classes by grade
     [HttpGet("GetClassesByGrade/{grade}")]
-    public async Task<ActionResult<List<Class>>> GetClassesByGrade(int grade)
+    public async Task<IActionResult> GetClassesByGrade(int grade)
     {
         var classes = await _classService.GetClassesByGradeAsync(grade);
         return Ok(classes);
     }
 
-    // Endpoint to add a student to a class based on class ID
     [HttpPost("AddStudentToClass")]
-    public async Task<ActionResult> AddStudentToClass(int studentId, int classId)
+    public async Task<IActionResult> AddStudentToClass([FromQuery] int studentId, [FromQuery] int classId)
     {
         var result = await _classService.AddStudentToClassAsync(studentId, classId);
         if (result)
         {
-            return Ok("Student added to class successfully.");
+            return Ok();
         }
-        return BadRequest("Failed to add student to class.");
+        else
+        {
+            return BadRequest("Could not add student to class.");
+        }
+    }
+    [HttpGet("GetStudentsWithoutClass")]
+    public async Task<IActionResult> GetStudentsWithoutClass()
+    {
+        var students = await _classService.GetStudentsWithoutClassAsync();
+        return Ok(students);
     }
 }
