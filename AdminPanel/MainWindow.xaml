@@ -25,6 +25,20 @@
             <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="Padding" Value="10"/>
             <Setter Property="Margin" Value="10 5"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="10"
+                                Padding="5"
+                                Margin="5">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
                     <Setter Property="Background" Value="LightGray"/>
@@ -89,6 +103,74 @@
             <Setter Property="Margin" Value="5"/>
             <Setter Property="Padding" Value="5"/>
         </Style>
+
+        <Style x:Key="roundedTextBox" TargetType="TextBox">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="10"
+                                Padding="5"
+                                Margin="5">
+                            <ScrollViewer x:Name="PART_ContentHost"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Background" Value="LightGray"/>
+            <Setter Property="BorderBrush" Value="DarkGray"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Padding" Value="5"/>
+        </Style>
+
+        <Style x:Key="roundedListBox" TargetType="ListBox">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ListBox">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="10"
+                                Padding="5"
+                                Margin="5">
+                            <ScrollViewer x:Name="PART_ContentHost" Focusable="False">
+                                <ItemsPresenter/>
+                            </ScrollViewer>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Background" Value="LightGray"/>
+            <Setter Property="BorderBrush" Value="DarkGray"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Padding" Value="5"/>
+        </Style>
+
+        <Style x:Key="roundedTextBlock" TargetType="TextBlock">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Padding" Value="5"/>
+        </Style>
+
+        <Style x:Key="dashboardBox" TargetType="Border">
+            <Setter Property="Background" Value="LightGray"/>
+            <Setter Property="BorderBrush" Value="DarkGray"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="10"/>
+            <Setter Property="Padding" Value="10"/>
+            <Setter Property="Margin" Value="10"/>
+        </Style>
+
+        <Style x:Key="dashboardTextBlock" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
     </Window.Resources>
 
     <Grid>
@@ -116,7 +198,7 @@
                         <fa:IconImage Icon="UserGear" Width="40" Height="40"/>
                     </Border>
                     <StackPanel Margin="10 0 0 0" VerticalAlignment="Center">
-                        <TextBlock Text="School Management" FontSize="16" Margin="0 0 0 5" Foreground="Black"/>
+                        <TextBlock Text="School Management" FontSize="14" Margin="0 0 0 5" Foreground="Black"/>
                     </StackPanel>
                 </StackPanel>
                 <Separator Height="1" Margin="20 20" Background="LightSlateGray"/>
@@ -175,20 +257,149 @@
                 <!-- Dashboard İçeriği -->
                 <ScrollViewer x:Name="DashboardContent" Grid.Row="2" Visibility="Visible" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
                     <StackPanel>
-                        <TextBlock Text="Overall Student Distribution" FontSize="16" FontWeight="Bold" Margin="20"/>
-                        <lvc:PieChart Series="{Binding OverallSeriesCollection}" LegendLocation="Right" Width="300" Height="300" Margin="20"/>
-                        <TextBlock Text="3rd Grade" FontSize="16" FontWeight="Bold" Margin="20"/>
-                        <lvc:PieChart Series="{Binding Grade3SeriesCollection}" LegendLocation="Right" Width="300" Height="300" Margin="20"/>
-                        <TextBlock Text="4th Grade" FontSize="16" FontWeight="Bold" Margin="20"/>
-                        <lvc:PieChart Series="{Binding Grade4SeriesCollection}" LegendLocation="Right" Width="300" Height="300" Margin="20"/>
-                        <TextBlock Text="5th Grade" FontSize="16" FontWeight="Bold" Margin="20"/>
-                        <lvc:PieChart Series="{Binding Grade5SeriesCollection}" LegendLocation="Right" Width="300" Height="300" Margin="20"/>
-                        <TextBlock Text="6th Grade" FontSize="16" FontWeight="Bold" Margin="20"/>
-                        <lvc:PieChart Series="{Binding Grade6SeriesCollection}" LegendLocation="Right" Width="300" Height="300" Margin="20"/>
-                        <TextBlock Text="7th Grade" FontSize="16" FontWeight="Bold" Margin="20"/>
-                        <lvc:PieChart Series="{Binding Grade7SeriesCollection}" LegendLocation="Right" Width="300" Height="300" Margin="20"/>
-                        <TextBlock Text="8th Grade" FontSize="16" FontWeight="Bold" Margin="20"/>
-                        <lvc:PieChart Series="{Binding Grade8SeriesCollection}" LegendLocation="Right" Width="300" Height="300" Margin="20"/>
+                        <!-- Üst Kısımda Ortalanmış Total Boxes -->
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="20">
+                            <Border Style="{StaticResource dashboardBox}">
+                                <StackPanel>
+                                    <TextBlock Text="Total Students" Style="{StaticResource dashboardTextBlock}"/>
+                                    <TextBlock Text="{Binding TotalStudents}" Style="{StaticResource dashboardTextBlock}"/>
+                                </StackPanel>
+                            </Border>
+                            <Border Style="{StaticResource dashboardBox}">
+                                <StackPanel>
+                                    <TextBlock Text="Total Teachers" Style="{StaticResource dashboardTextBlock}"/>
+                                    <TextBlock Text="{Binding TotalTeachers}" Style="{StaticResource dashboardTextBlock}"/>
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+
+                        <!-- Sınıf Kutuları -->
+                        <Grid HorizontalAlignment="Center" Margin="20">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <!-- 3. Sınıf -->
+                            <Border Grid.Row="0" Grid.Column="0" Style="{StaticResource dashboardBox}">
+                                <StackPanel>
+                                    <TextBlock Text="3-A" Style="{StaticResource dashboardTextBlock}"/>
+                                    <TextBlock Text="{Binding Class3A}" Style="{StaticResource dashboardTextBlock}"/>
+                                </StackPanel>
+                            </Border>
+                            <Border Grid.Row="1" Grid.Column="0" Style="{StaticResource dashboardBox}">
+                                <StackPanel>
+                                    <TextBlock Text="4-A" Style="{StaticResource dashboardTextBlock}"/>
+                                    <TextBlock Text="{Binding Class4A}" Style="{StaticResource dashboardTextBlock}"/>
+                                </StackPanel>
+                            </Border>
+                            <Border Grid.Row="2" Grid.Column="0" Style="{StaticResource dashboardBox}">
+                                <StackPanel>
+                                    <TextBlock Text="5-A" Style="{StaticResource dashboardTextBlock}"/>
+                                    <TextBlock Text="{Binding Class5A}" Style="{StaticResource dashboardTextBlock}"/>
+                                </StackPanel>
+                            </Border>
+                            <Border Grid.Row="3" Grid.Column="0" Style="{StaticResource dashboardBox}">
+                                <StackPanel>
+                                    <TextBlock Text="6-A" Style="{StaticResource dashboardTextBlock}"/>
+                                    <TextBlock Text="{Binding Class6A}" Style="{StaticResource dashboardTextBlock}"/>
+                                </StackPanel>
+                            </Border>
+                            <Border Grid.Row="4" Grid.Column="0" Style="{StaticResource dashboardBox}">
+                                <StackPanel>
+                                    <TextBlock Text="7-A" Style="{StaticResource dashboardTextBlock}"/>
+                                    <TextBlock Text="{Binding Class7A}" Style="{StaticResource dashboardTextBlock}"/>
+                                </StackPanel>
+                            </Border>
+                            <Border Grid.Row="5" Grid.Column="0" Style="{StaticResource dashboardBox}">
+                                <StackPanel>
+                                    <TextBlock Text="8-A" Style="{StaticResource dashboardTextBlock}"/>
+                                    <TextBlock Text="{Binding Class8A}" Style="{StaticResource dashboardTextBlock}"/>
+                                </StackPanel>
+                            </Border>
+                            <!-- 3. Sınıf B -->
+                            <Border Grid.Row="0" Grid.Column="1" Style="{StaticResource dashboardBox}">
+                                <StackPanel>
+                                    <TextBlock Text="3-B" Style="{StaticResource dashboardTextBlock}"/>
+                                    <TextBlock Text="{Binding Class3B}" Style="{StaticResource dashboardTextBlock}"/>
+                                </StackPanel>
+                            </Border>
+                            <Border Grid.Row="1" Grid.Column="1" Style="{StaticResource dashboardBox}">
+                                <StackPanel>
+                                    <TextBlock Text="4-B" Style="{StaticResource dashboardTextBlock}"/>
+                                    <TextBlock Text="{Binding Class4B}" Style="{StaticResource dashboardTextBlock}"/>
+                                </StackPanel>
+                            </Border>
+                            <Border Grid.Row="2" Grid.Column="1" Style="{StaticResource dashboardBox}">
+                                <StackPanel>
+                                    <TextBlock Text="5-B" Style="{StaticResource dashboardTextBlock}"/>
+                                    <TextBlock Text="{Binding Class5B}" Style="{StaticResource dashboardTextBlock}"/>
+                                </StackPanel>
+                            </Border>
+                            <Border Grid.Row="3" Grid.Column="1" Style="{StaticResource dashboardBox}">
+                                <StackPanel>
+                                    <TextBlock Text="6-B" Style="{StaticResource dashboardTextBlock}"/>
+                                    <TextBlock Text="{Binding Class6B}" Style="{StaticResource dashboardTextBlock}"/>
+                                </StackPanel>
+                            </Border>
+                            <Border Grid.Row="4" Grid.Column="1" Style="{StaticResource dashboardBox}">
+                                <StackPanel>
+                                    <TextBlock Text="7-B" Style="{StaticResource dashboardTextBlock}"/>
+                                    <TextBlock Text="{Binding Class7B}" Style="{StaticResource dashboardTextBlock}"/>
+                                </StackPanel>
+                            </Border>
+                            <Border Grid.Row="5" Grid.Column="1" Style="{StaticResource dashboardBox}">
+                                <StackPanel>
+                                    <TextBlock Text="8-B" Style="{StaticResource dashboardTextBlock}"/>
+                                    <TextBlock Text="{Binding Class8B}" Style="{StaticResource dashboardTextBlock}"/>
+                                </StackPanel>
+                            </Border>
+                            <!-- 3. Sınıf C -->
+                            <Border Grid.Row="0" Grid.Column="2" Style="{StaticResource dashboardBox}">
+                                <StackPanel>
+                                    <TextBlock Text="3-C" Style="{StaticResource dashboardTextBlock}"/>
+                                    <TextBlock Text="{Binding Class3C}" Style="{StaticResource dashboardTextBlock}"/>
+                                </StackPanel>
+                            </Border>
+                            <Border Grid.Row="1" Grid.Column="2" Style="{StaticResource dashboardBox}">
+                                <StackPanel>
+                                    <TextBlock Text="4-C" Style="{StaticResource dashboardTextBlock}"/>
+                                    <TextBlock Text="{Binding Class4C}" Style="{StaticResource dashboardTextBlock}"/>
+                                </StackPanel>
+                            </Border>
+                            <Border Grid.Row="2" Grid.Column="2" Style="{StaticResource dashboardBox}">
+                                <StackPanel>
+                                    <TextBlock Text="5-C" Style="{StaticResource dashboardTextBlock}"/>
+                                    <TextBlock Text="{Binding Class5C}" Style="{StaticResource dashboardTextBlock}"/>
+                                </StackPanel>
+                            </Border>
+                            <Border Grid.Row="3" Grid.Column="2" Style="{StaticResource dashboardBox}">
+                                <StackPanel>
+                                    <TextBlock Text="6-C" Style="{StaticResource dashboardTextBlock}"/>
+                                    <TextBlock Text="{Binding Class6C}" Style="{StaticResource dashboardTextBlock}"/>
+                                </StackPanel>
+                            </Border>
+                            <Border Grid.Row="4" Grid.Column="2" Style="{StaticResource dashboardBox}">
+                                <StackPanel>
+                                    <TextBlock Text="7-C" Style="{StaticResource dashboardTextBlock}"/>
+                                    <TextBlock Text="{Binding Class7C}" Style="{StaticResource dashboardTextBlock}"/>
+                                </StackPanel>
+                            </Border>
+                            <Border Grid.Row="5" Grid.Column="2" Style="{StaticResource dashboardBox}">
+                                <StackPanel>
+                                    <TextBlock Text="8-C" Style="{StaticResource dashboardTextBlock}"/>
+                                    <TextBlock Text="{Binding Class8C}" Style="{StaticResource dashboardTextBlock}"/>
+                                </StackPanel>
+                            </Border>
+                        </Grid>
                     </StackPanel>
                 </ScrollViewer>
 
@@ -196,100 +407,121 @@
                 <Grid x:Name="RegisterContent" Grid.Row="2" Visibility="Collapsed">
                     <StackPanel Margin="20">
                         <TextBlock Text="Öğrenci Kaydı" FontSize="20" FontWeight="Bold" Margin="0 0 0 20"/>
-                        <ListBox x:Name="StudentListBox" SelectionChanged="StudentListBox_SelectionChanged" Width="400" Height="100">
+                        <ListBox x:Name="StudentListBox" SelectionChanged="StudentListBox_SelectionChanged" Width="400" Height="100" Style="{StaticResource roundedListBox}">
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
                                     <StackPanel>
-                                    <StackPanel Orientation="Vertical">
-                                        <TextBlock Text="{Binding Name}" FontWeight="Bold"/>
-                                        
-                                    </StackPanel>
-                                    <StackPanel Orientation="Vertical">
-                                    <TextBlock Text="{Binding Surname}" FontWeight="Bold" Margin="5 0 0 0"/>
-                                    </StackPanel>
+                                        <StackPanel Orientation="Vertical">
+                                            <TextBlock Text="{Binding Name}" FontWeight="Bold"/>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Vertical">
+                                            <TextBlock Text="{Binding Surname}" FontWeight="Bold" Margin="5 0 0 0"/>
+                                        </StackPanel>
                                     </StackPanel>
                                 </DataTemplate>
                             </ListBox.ItemTemplate>
                         </ListBox>
-                        <TextBlock Text="Ad Soyad:"/>
-                        <TextBox x:Name="StudentName" Width="200" Margin="0 0 0 10" IsReadOnly="True"/>
-                        <TextBlock Text="Anne Adı:"/>
-                        <TextBox x:Name="StudentMotherName" Width="200" Margin="0 0 0 10" IsReadOnly="True"/>
-                        <TextBlock Text="Baba Adı:"/>
-                        <TextBox x:Name="StudentFatherName" Width="200" Margin="0 0 0 10" IsReadOnly="True"/>
-                        <TextBlock Text="Adres:"/>
-                        <TextBox x:Name="StudentAddress" Width="200" Margin="0 0 0 10" IsReadOnly="True"/>
-                        <TextBlock Text="Cinsiyet:"/>
-                        <TextBox x:Name="StudentGender" Width="200" Margin="0 0 0 10" IsReadOnly="True"/>
-                        <TextBlock Text="Doğum Tarihi:"/>
-                        <TextBox x:Name="StudentBirthDate" Width="200" Margin="0 0 0 10" IsReadOnly="True"/>
-                        <TextBlock Text="Age:"/>
-                        <TextBox x:Name="StudentAge" Width="200" Margin="0 0 0 10" IsReadOnly="True"/>
-                        <TextBlock Text="E-posta:"/>
-                        <TextBox x:Name="StudentEmail" Width="200" Margin="0 0 0 10" IsReadOnly="True"/>
-                        <Button Content="Onayla" Width="200" Click="ConfirmStudent_Click"/>
+                        <Grid Margin="10 0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Text="Ad Soyad:" Grid.Column="0" Grid.Row="0" VerticalAlignment="Center"/>
+                            <TextBox x:Name="StudentName" Grid.Column="1" Grid.Row="0" Width="200" Margin="5 0 0 10" IsReadOnly="True" Style="{StaticResource roundedTextBox}"/>
+                            <TextBlock Text="Anne Adı:" Grid.Column="0" Grid.Row="1" VerticalAlignment="Center"/>
+                            <TextBox x:Name="StudentMotherName" Grid.Column="1" Grid.Row="1" Width="200" Margin="5 0 0 10" IsReadOnly="True" Style="{StaticResource roundedTextBox}"/>
+                            <TextBlock Text="Baba Adı:" Grid.Column="0" Grid.Row="2" VerticalAlignment="Center"/>
+                            <TextBox x:Name="StudentFatherName" Grid.Column="1" Grid.Row="2" Width="200" Margin="5 0 0 10" IsReadOnly="True" Style="{StaticResource roundedTextBox}"/>
+                            <TextBlock Text="Adres:" Grid.Column="0" Grid.Row="3" VerticalAlignment="Center"/>
+                            <TextBox x:Name="StudentAddress" Grid.Column="1" Grid.Row="3" Width="200" Margin="5 0 0 10" IsReadOnly="True" Style="{StaticResource roundedTextBox}"/>
+                            <TextBlock Text="Cinsiyet:" Grid.Column="0" Grid.Row="4" VerticalAlignment="Center"/>
+                            <TextBox x:Name="StudentGender" Grid.Column="1" Grid.Row="4" Width="200" Margin="5 0 0 10" IsReadOnly="True" Style="{StaticResource roundedTextBox}"/>
+                            <TextBlock Text="Doğum Tarihi:" Grid.Column="0" Grid.Row="5" VerticalAlignment="Center"/>
+                            <TextBox x:Name="StudentBirthDate" Grid.Column="1" Grid.Row="5" Width="200" Margin="5 0 0 10" IsReadOnly="True" Style="{StaticResource roundedTextBox}"/>
+                            <TextBlock Text="Age:" Grid.Column="0" Grid.Row="6" VerticalAlignment="Center"/>
+                            <TextBox x:Name="StudentAge" Grid.Column="1" Grid.Row="6" Width="200" Margin="5 0 0 10" IsReadOnly="True" Style="{StaticResource roundedTextBox}"/>
+                            <TextBlock Text="E-posta:" Grid.Column="0" Grid.Row="7" VerticalAlignment="Center"/>
+                            <TextBox x:Name="StudentEmail" Grid.Column="1" Grid.Row="7" Width="200" Margin="5 0 0 10" IsReadOnly="True" Style="{StaticResource roundedTextBox}"/>
+                        </Grid>
+                        <Button Content="Onayla" Width="200" Click="ConfirmStudent_Click" Style="{StaticResource roundedButton}" Margin="0 10 0 0"/>
                     </StackPanel>
                 </Grid>
 
-
                 <!-- Class İçerik -->
                 <Grid x:Name="ClassContent" Grid.Row="2" Visibility="Collapsed">
-    <StackPanel Margin="20">
-        <TextBlock Text="Sınıf Bilgileri" FontSize="20" FontWeight="Bold" Margin="0 0 0 20"/>
-        
-        <!-- List of Students Without Class -->
-        <TextBlock Text="Sınıfsız Öğrenciler:" FontSize="16" FontWeight="Bold" Margin="0 10 0 10"/>
-        <ListBox x:Name="StudentListBoxWithoutClass" Width="400" Height="100" SelectionChanged="StudentListBoxWithoutClass_SelectionChanged">
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <StackPanel>
-                        <TextBlock Text="{Binding Name}" FontWeight="Bold"/>
-                        <TextBlock Text="{Binding Surname}" Margin="5 0 0 0"/>
+                    <StackPanel Margin="20">
+                        <TextBlock Text="Sınıf Bilgileri" FontSize="20" FontWeight="Bold" Margin="0 0 0 20"/>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Grid.Column="0" Margin="10">
+                                <TextBlock Text="Sınıfsız Öğrenciler:" FontSize="16" FontWeight="Bold" Margin="0 10 0 10"/>
+                                <ListBox x:Name="StudentListBoxWithoutClass" Width="400" Height="100" SelectionChanged="StudentListBoxWithoutClass_SelectionChanged" Style="{StaticResource roundedListBox}">
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackPanel>
+                                                <TextBlock Text="{Binding Name}" FontWeight="Bold"/>
+                                                <TextBlock Text="{Binding Surname}" Margin="5 0 0 0"/>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
+                            </StackPanel>
+                            <StackPanel Grid.Column="1" Margin="10">
+                                <TextBlock Text="Sınıflar:" FontSize="16" FontWeight="Bold" Margin="0 10 0 10"/>
+                                <ListBox x:Name="ClassListBox" Width="400" Height="100" SelectionChanged="ClassListBox_SelectionChanged" Style="{StaticResource roundedListBox}">
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackPanel>
+                                                <TextBlock Text="{Binding ClassLetter}" FontWeight="Bold"/>
+                                                <TextBlock Text="{Binding Grade}" Margin="5 0 0 0"/>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
+                            </StackPanel>
+                        </Grid>
+                        <TextBlock Text="Seçili Öğrenci:" FontSize="16" FontWeight="Bold" Margin="0 10 0 10"/>
+                        <TextBlock x:Name="SelectedStudentText" FontSize="14" Margin="0 0 0 10" Style="{StaticResource roundedTextBlock}"/>
+                        <TextBlock Text="Seçili Sınıf:" FontSize="16" FontWeight="Bold" Margin="0 10 0 10"/>
+                        <TextBlock x:Name="SelectedClassText" FontSize="14" Margin="0 0 0 10" Style="{StaticResource roundedTextBlock}"/>
+                        <Button Content="Öğrenciyi Sınıfa Ata" Width="200" Click="AssignStudentToClass_Click" Style="{StaticResource roundedButton}" Margin="0 10 0 0"/>
                     </StackPanel>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
-        
-        <!-- List of Classes -->
-        <TextBlock Text="Sınıflar:" FontSize="16" FontWeight="Bold" Margin="0 10 0 10"/>
-        <ListBox x:Name="ClassListBox" Width="400" Height="100" SelectionChanged="ClassListBox_SelectionChanged">
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <StackPanel>
-                        <TextBlock Text="{Binding ClassLetter}" FontWeight="Bold"/>
-                        <TextBlock Text="{Binding Grade}" Margin="5 0 0 0"/>
-                    </StackPanel>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
-        
-        <!-- Selected Student and Class Details -->
-        <TextBlock Text="Seçili Öğrenci:" FontSize="16" FontWeight="Bold" Margin="0 10 0 10"/>
-        <TextBlock x:Name="SelectedStudentText" FontSize="14" Margin="0 0 0 10"/>
-        <TextBlock Text="Seçili Sınıf:" FontSize="16" FontWeight="Bold" Margin="0 10 0 10"/>
-        <TextBlock x:Name="SelectedClassText" FontSize="14" Margin="0 0 0 10"/>
-        
-        <!-- Submit Button -->
-        <Button Content="Öğrenciyi Sınıfa Ata" Width="200" Click="AssignStudentToClass_Click"/>
-    </StackPanel>
-</Grid>
+                </Grid>
 
                 <!-- Öğretmen İçerik -->
                 <Grid x:Name="TeacherContent" Grid.Row="2" Visibility="Collapsed">
                     <StackPanel Margin="20">
                         <TextBlock Text="Öğretmenler" FontSize="20" FontWeight="Bold" Margin="0 0 0 10"/>
-                        <ListBox x:Name="TeacherListBoxForTeachers" DisplayMemberPath="FullName" SelectionChanged="TeacherListBox_SelectionChanged" Height="150" Margin="0 0 0 10"/>
-                        <TextBlock Text="Sınıflar" FontSize="20" FontWeight="Bold" Margin="0 0 0 10"/>
-                        <ListBox x:Name="ClassListBoxForTeachers" DisplayMemberPath="ClassName" SelectionChanged="ClassListBoxForTeachers_SelectionChanged" Height="150" Margin="0 0 0 10"/>
-                        <StackPanel Orientation="Horizontal" Margin="0 0 0 10">
+                        <Grid Margin="10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <ListBox x:Name="TeacherListBoxForTeachers" DisplayMemberPath="FullName" SelectionChanged="TeacherListBox_SelectionChanged" Height="150" Margin="0 10 0 10" Style="{StaticResource roundedListBox}" Grid.Column="0"/>
+                            <ListBox x:Name="ClassListBoxForTeachers" DisplayMemberPath="ClassName" SelectionChanged="ClassListBoxForTeachers_SelectionChanged" Height="150" Margin="0 10 0 10" Style="{StaticResource roundedListBox}" Grid.Column="1"/>
+                        </Grid>
+                        <StackPanel Orientation="Horizontal" Margin="10">
                             <TextBlock Text="Seçilen Sınıf: " FontWeight="Bold" VerticalAlignment="Center"/>
-                            <TextBlock x:Name="SelectedClassTextForTeachers" FontWeight="Bold" VerticalAlignment="Center"/>
+                            <TextBlock x:Name="SelectedClassTextForTeachers" FontWeight="Bold" VerticalAlignment="Center" Margin="5"/>
                         </StackPanel>
-                        <StackPanel Orientation="Horizontal" Margin="0 0 0 10">
+                        <StackPanel Orientation="Horizontal" Margin="10">
                             <TextBlock Text="Seçilen Öğretmen: " FontWeight="Bold" VerticalAlignment="Center"/>
-                            <TextBlock x:Name="SelectedTeacherText" FontWeight="Bold" VerticalAlignment="Center"/>
+                            <TextBlock x:Name="SelectedTeacherText" FontWeight="Bold" VerticalAlignment="Center" Margin="5"/>
                         </StackPanel>
-                        <Button Content="Öğretmeni Sınıfa Ekle" Click="AddTeacherToClass_Click" Margin="0 0 0 10"/>
+                        <Button Content="Öğretmeni Sınıfa Ekle" Click="AddTeacherToClass_Click" Margin="0 10 0 10" Style="{StaticResource roundedButton}"/>
                     </StackPanel>
                 </Grid>
 
@@ -299,7 +531,7 @@
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="3*"/>
                     </Grid.ColumnDefinitions>
-                    <ListBox x:Name="StudentInfoListBox" SelectionChanged="StudentInfoListBox_SelectionChanged" DisplayMemberPath="FullName"/>
+                    <ListBox x:Name="StudentInfoListBox" SelectionChanged="StudentInfoListBox_SelectionChanged" DisplayMemberPath="FullName" Style="{StaticResource roundedListBox}"/>
                     <StackPanel Margin="20" Grid.Column="1">
                         <TextBlock Text="Bilgi" FontSize="20" FontWeight="Bold" Margin="0 0 0 20"/>
         
